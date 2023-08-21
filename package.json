@@ -1,6 +1,6 @@
 {
   "name": "more-maps",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Collection of maplike data structures. Including a bidirectional mpa and a MultiMap.",
   "main": "./app/dist/esm/moreMaps.mjs",
   "types": "./app/dist/esm/moreMaps.d.ts",
