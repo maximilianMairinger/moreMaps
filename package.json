@@ -30,9 +30,9 @@
     "url": "git+https://github.com/maximilianMairinger/moreMaps.git"
   },
   "keywords": [
-  "more",
-  "maps"
-],
+    "more",
+    "maps"
+  ],
   "author": "maximilianMairinger",
   "license": "ISC",
   "bugs": {
@@ -61,8 +61,9 @@
     "webpack-merge": "^5.0.9"
   },
   "dependencies": {
-    "commander": "^10.0.1",
     "colorful-cli-logger": "^1.0.0",
+    "commander": "^10.0.1",
+    "key-index": "^1.4.14",
     "req-package-json": "^2.1.2"
   }
 }
