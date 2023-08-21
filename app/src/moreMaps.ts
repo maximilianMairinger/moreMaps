@@ -29,20 +29,52 @@ export class MultiMap<K, V> {
   get(key: K, atIndex: number = 0) {
     return this.getAll(key)[atIndex]
   }
+
+  delete(key: K, val?: V) {
+    if (val) {
+      const all = this.getAll(key)
+      const i = all.indexOf(val)
+      if (i === -1) return false
+      all.splice(i, 1)
+      return true
+    } else {
+      return this.index.delete(key)
+    }
+  }
+
+  keys() {
+    return this.index.keys()
+  }
+
+  clear() {
+    this.index.clear()
+  }
+
+  get size() {
+    return this.index.size
+  }
+
+  // accumulated size over all keys and their values
+  get accSize() {
+    let len = 0
+    for (let [key, val] of this) {
+      len += val.length
+    }
+    return len
+  }
   
   has(key: K) {
     return !!this.getAll(key)
   }
   forEach(cb: (key: K, vals: V[]) => void) {
-    for (let e of this.index.entries()) {
-      // @ts-ignore
+    for (let e of this) {
       cb(...e)
     }
   }
-  *[Symbol.iterator](): IterableIterator<[key: K, vals: V[]]> {
-    return this.index.entries()
+  [Symbol.iterator](): IterableIterator<[key: K, vals: V[]]> {
+    return this.index[Symbol.iterator]()
   }
   entries() {
-    return this[Symbol.iterator]()
+    return this.index.entries()
   }
 }
