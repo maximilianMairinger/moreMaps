@@ -1,0 +1,68 @@
+{
+  "name": "more-maps",
+  "version": "0.0.1",
+  "description": "Collection of maplike data structures. Including a bidirectional mpa and a MultiMap.",
+  "main": "./app/dist/esm/moreMaps.mjs",
+  "types": "./app/dist/esm/moreMaps.d.ts",
+  "exports": {
+    "node": {
+      "import": "./app/dist/esm/moreMaps.mjs",
+      "require": "./app/dist/cjs/moreMaps.js"
+    },
+    "default": "./app/dist/esm/moreMaps.mjs"
+  },
+  "scripts": {
+    "build": "del-cli app/dist && concurrently \"npm run buildESM\" \"npm run buildCJS\" --raw",
+    "buildESM": "tsc -p ./tsconfig.prod.esm.json && mjsify app/dist esm cjs",
+    "buildCJS": "tsc -p ./tsconfig.prod.cjs.json && npm run buildCJS2",
+    "buildCJS2": "concurrently \"rollup --config rollup.node.prod.config.mjs\" \"rollup --config rollup.node.prod.cli.config.mjs\" --hide 0",
+    "dev": "npm run devWeb",
+    "devWeb": "concurrently \"rollup --config rollup.web.dev.config.mjs -w\" \"node devServer.mjs\" --raw ",
+    "devNode": "concurrently \"rollup --config rollup.node.dev.config.mjs -w\" \"rollup --config rollup.node.prod.cli.config.mjs\" \"wait-on repl/dist/crossPlatformSpecs-repl.js && echo && echo Run \\'npm run repl\\' to run repl.\" --raw",
+    "deploy": "npm run build && npm publish",
+    "repl": "node ./repl/dist/moreMaps-repl.js",
+    "start": "npm run repl",
+    "buildTest": "rollup --config rollup.node.test.config.mjs",
+    "test": "npm run buildTest && jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maximilianMairinger/moreMaps.git"
+  },
+  "keywords": [
+  "more",
+  "maps"
+],
+  "author": "maximilianMairinger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maximilianMairinger/moreMaps/issues"
+  },
+  "homepage": "https://github.com/maximilianMairinger/moreMaps#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-typescript": "^11.1.1",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^13.13.4",
+    "builtins": "^5.0.1",
+    "concurrently": "^8.0.1",
+    "del-cli": "^5.0.0",
+    "detect-port": "^1.5.1",
+    "express": "^4.18.2",
+    "jest": "^26.6.3",
+    "mjsify": "^2.0.6",
+    "open": "^9.1.0",
+    "rollup": "^3.21.7",
+    "tslib": "2.0.0",
+    "typescript": "^5.0.4",
+    "wait-on": "^7.0.1",
+    "webpack-merge": "^5.0.9"
+  },
+  "dependencies": {
+    "commander": "^10.0.1",
+    "colorful-cli-logger": "^1.0.0",
+    "req-package-json": "^2.1.2"
+  }
+}
