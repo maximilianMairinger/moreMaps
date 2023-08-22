@@ -17,7 +17,9 @@ lel.add("b", "1")
 lel.add("c", "1")
 lel.add("a", "2")
 
-console.log(lel.entries())
+for (const iterator of lel) {
+  console.log(iterator) 
+}
 
 
 

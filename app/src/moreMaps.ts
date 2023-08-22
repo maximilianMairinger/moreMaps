@@ -1,7 +1,17 @@
 import keyIndex from "key-index"
 
-export class BidirectionalMap<K, V> extends Map<K, V> {
-  public reverse: Map<V, K> = new Map
+export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
+  public reverse: BidirectionalMap<V, K>
+  constructor(entries_revereMap?: readonly (readonly [K, V])[] | null | BidirectionalMap<V, K>) {
+    if (entries_revereMap instanceof BidirectionalMap) {
+      super()
+      this.reverse = entries_revereMap
+    }
+    else {
+      super(entries_revereMap)
+      this.reverse = new BidirectionalMap(this)
+    }
+  }
 
   set(k: K, v: V) {
     this.reverse.set(v, k)
@@ -13,7 +23,9 @@ export class BidirectionalMap<K, V> extends Map<K, V> {
   }
 }
 
-export class MultiMap<K, V> {
+
+
+export class MultiMap<K = any, V = any> {
   private index = keyIndex<K, V[]>(() => [])
   constructor(...index: {key: K, val: V}[]) {
     for (const e of index) {
@@ -78,3 +90,32 @@ export class MultiMap<K, V> {
     return this.index.entries()
   }
 }
+
+export class BidirectionalMultiMap<K = any, V = any> extends MultiMap<K, V> {
+  public reverse: BidirectionalMultiMap<V, K>
+  constructor(...entries_revereMap: [BidirectionalMultiMap<V, K> | {key: K, val: V}, ...{key: K, val: V}[]]) {
+    if (entries_revereMap[0] instanceof BidirectionalMultiMap) {
+      super()
+      this.reverse = entries_revereMap[0]
+    }
+    else {
+      super(...entries_revereMap as {key: K, val: V}[])
+      this.reverse = new BidirectionalMultiMap(this)
+    }
+  }
+  add(key: K, val: V) {
+    this.reverse.add(val, key)
+    return super.add(key, val)
+  }
+  delete(key: K, val?: V) {
+    if (val) {
+      this.reverse.delete(val, key)
+      return super.delete(key, val)
+    } else {
+      for (const val of this.getAll(key)) this.reverse.delete(val)  
+      return super.delete(key)
+    }
+  }
+
+}
+
