@@ -91,8 +91,11 @@ export class MultiMap<K = any, V = any> {
   }
 }
 
+
 export class BidirectionalMultiMap<K = any, V = any> extends MultiMap<K, V> {
   public reverse: BidirectionalMultiMap<V, K>
+  constructor(...entries: {key: K, val: V}[])
+  constructor(revereMap: BidirectionalMultiMap<V, K>)
   constructor(...entries_revereMap: [BidirectionalMultiMap<V, K> | {key: K, val: V}, ...{key: K, val: V}[]]) {
     if (entries_revereMap[0] instanceof BidirectionalMultiMap) {
       super()
