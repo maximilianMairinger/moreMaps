@@ -1,4 +1,5 @@
 import keyIndex from "key-index"
+import iterate from "iterare"
 
 
 export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
@@ -57,6 +58,10 @@ export class MultiMap<K = any, V = any> {
 
   keys() {
     return this.index.keys()
+  }
+
+  values() {
+    return iterate(this.index.entries()).map(([key, vals]) => vals).flatten()
   }
 
   clear() {
