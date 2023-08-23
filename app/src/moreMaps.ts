@@ -1,5 +1,9 @@
 import keyIndex from "key-index"
 
+function callSuper() {
+
+}
+
 export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
   public reverse: BidirectionalMap<V, K>
   constructor(entries_revereMap?: readonly (readonly [K, V])[] | null | BidirectionalMap<V, K>) {
@@ -14,11 +18,11 @@ export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
   }
 
   set(k: K, v: V) {
-    this.reverse.set(v, k)
+    Map.prototype.set.call(this.reverse, v, k)
     return super.set(k, v)
   }
   delete(k: K) {
-    this.reverse.delete(this.get(k))
+    Map.prototype.delete.call(this.reverse, this.get(k))
     return super.delete(k)
   }
 }
@@ -106,16 +110,18 @@ export class BidirectionalMultiMap<K = any, V = any> extends MultiMap<K, V> {
       this.reverse = new BidirectionalMultiMap(this)
     }
   }
+
   add(key: K, val: V) {
-    this.reverse.add(val, key)
+    MultiMap.prototype.add.call(this.reverse, val, key)
     return super.add(key, val)
   }
+
   delete(key: K, val?: V) {
     if (val) {
-      this.reverse.delete(val, key)
+      MultiMap.prototype.delete.call(this.reverse, val, key)
       return super.delete(key, val)
     } else {
-      for (const val of this.getAll(key)) this.reverse.delete(val)  
+      for (const val of this.getAll(key)) MultiMap.prototype.delete.call(this.reverse, val, key)
       return super.delete(key)
     }
   }
