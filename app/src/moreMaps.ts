@@ -1,8 +1,5 @@
 import keyIndex from "key-index"
 
-function callSuper() {
-
-}
 
 export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
   public reverse: BidirectionalMap<V, K>
