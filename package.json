@@ -1,7 +1,7 @@
 {
   "name": "more-maps",
   "version": "1.1.0",
-  "description": "Collection of maplike data structures. Including a bidirectional mpa and a MultiMap.",
+  "description": "A collection of additional map-like data structures. Including a bidirectional map, a multi map, and a bidirectional multi map.",
   "main": "./app/dist/esm/moreMaps.mjs",
   "types": "./app/dist/esm/moreMaps.d.ts",
   "exports": {
@@ -30,8 +30,17 @@
     "url": "git+https://github.com/maximilianMairinger/moreMaps.git"
   },
   "keywords": [
+    "maps",
+    "bidirectional",
     "more",
-    "maps"
+    "multimap",
+    "bidirectional-map",
+    "bidirectional-mapping",
+    "map",
+    "mapping",
+    "dict",
+    "dictionary",
+    "bidirectional-dictionary"
   ],
   "author": "maximilianMairinger",
   "license": "ISC",

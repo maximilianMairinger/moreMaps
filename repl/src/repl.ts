@@ -4,37 +4,58 @@
 // moreMaps()
 
 
-import keyIndex from "key-index"
-import { MultiMap } from "../../app/src/moreMaps"
+import { MultiMap, BidirectionalMap, BidirectionalMultiMap } from "../../app/src/moreMaps"
+
+(() => {
+  const map = new MultiMap<string, number>()
+
+  map.add("one", 1)
+  map.add("one", 2)
+  map.add("one", 3)
+  map.add("two", 4)
+  
+  console.log(map.getAll("one")) // [1, 2, 3]
+  console.log(map.get("one")) // 1
+  console.log(map.get("two")) // 4
+  
+  map.delete("one", 2)
+  console.log(map.getAll("one")) // [1, 3]
+  
+  map.delete("one")
+  console.log(map.getAll("one")) // [1, 3]
+  console.log(map.get("one")) // [1, 3]
+  
+})();
+
+console.log("-------");
+
+(() => {
+  const map = new BidirectionalMap<string, number>()
+
+  map.set("one", 1)
+  map.set("two", 2)
+  
+  console.log(map.get("one")) // 1
+  console.log(map.reverse.get(2)) // "two"
+  
+  console.log(map.reverse.reverse === map) // true
+})();
 
 
-const lel = new MultiMap()
+console.log("-------");
 
+(() => {
+  const map = new BidirectionalMultiMap<string, number>()
 
+  map.add("one", 1)
+  map.add("one", 2)
+  map.add("two", 3)
+  map.add("three", 2)
 
-lel.add("a", "1")
-lel.add("b", "1")
-lel.add("c", "1")
-lel.add("a", "2")
+  console.log(map.getAll("one")) // [1, 2]
+  console.log(map.reverse.getAll(2)) // ["one", "three"]
 
-for (const iterator of lel) {
-  console.log(iterator) 
-}
-
-
-
-
-
-const ind = keyIndex(() => {
-  return Math.random()
-})
-
-ind("a")
-ind("b")
-ind("c")
-
-console.log(ind.entries())
-
-const map = new Map()
-
-map
+  map.delete("one", 2)
+  console.log(map.getAll("one")) // [1]
+  console.log(map.reverse.getAll(2)) // ["three"]
+})();
