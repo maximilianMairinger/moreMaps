@@ -1,5 +1,5 @@
 import keyIndex from "key-index"
-import iterate from "iterare"
+import { iterate } from "iterare"
 
 
 export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
