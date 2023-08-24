@@ -2,17 +2,19 @@ import keyIndex from "key-index"
 import { iterate } from "iterare"
 
 
+let reverse: any = undefined
 export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
   public reverse: BidirectionalMap<V, K>
-  constructor(entries_revereMap?: readonly (readonly [K, V])[] | null | BidirectionalMap<V, K>) {
-    if (entries_revereMap instanceof BidirectionalMap) {
-      super()
-      this.reverse = entries_revereMap
-    }
+  constructor(entries?: readonly (readonly [K, V])[] | Iterable<readonly [K, V]>) {
+    super()
+    
+    if (reverse !== undefined) this.reverse = reverse
     else {
-      super(entries_revereMap)
-      this.reverse = new BidirectionalMap(this)
+      reverse = this
+      this.reverse = new BidirectionalMap()
+      reverse = undefined
     }
+    if (entries !== undefined) for (const [key, value] of entries) this.set(key, value)
   }
 
   set(k: K, v: V) {
@@ -27,11 +29,16 @@ export class BidirectionalMap<K = any, V = any> extends Map<K, V> {
 
 
 
+
+
 export class MultiMap<K = any, V = any> {
   private index = keyIndex<K, V[]>(() => [])
-  constructor(...index: {key: K, val: V}[]) {
-    for (const e of index) {
-      this.index(e.key).push(e.val)
+
+  constructor(entries?: readonly (readonly [K, V[]])[] | Iterable<readonly [K, V[]]>) {
+    if (entries) {
+      for (const [key, val] of entries) {
+        this.index(key).push(...val)
+      }
     }
   }
   add(key: K, val: V) {
@@ -98,19 +105,20 @@ export class MultiMap<K = any, V = any> {
 }
 
 
+
+
 export class BidirectionalMultiMap<K = any, V = any> extends MultiMap<K, V> {
   public reverse: BidirectionalMultiMap<V, K>
-  constructor(...entries: {key: K, val: V}[])
-  constructor(revereMap: BidirectionalMultiMap<V, K>)
-  constructor(...entries_revereMap: [BidirectionalMultiMap<V, K> | {key: K, val: V}, ...{key: K, val: V}[]]) {
-    if (entries_revereMap[0] instanceof BidirectionalMultiMap) {
-      super()
-      this.reverse = entries_revereMap[0]
-    }
+  
+  constructor(entries?: readonly (readonly [K, V[]])[] | Iterable<readonly [K, V[]]>) {
+    super()
+    if (reverse !== undefined) this.reverse = reverse
     else {
-      super(...entries_revereMap as {key: K, val: V}[])
-      this.reverse = new BidirectionalMultiMap(this)
+      reverse = this
+      this.reverse = new BidirectionalMultiMap()
+      reverse = undefined
     }
+    if (entries !== undefined) for (const [key, values] of entries) for (const value of values) this.add(key, value)
   }
 
   add(key: K, val: V) {
