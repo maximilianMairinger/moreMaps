@@ -70,6 +70,7 @@
     "webpack-merge": "^5.0.9"
   },
   "dependencies": {
+    "fast-linked-list": "^3.2.3",
     "iterare": "^1.2.1",
     "key-index": "^1.4.16"
   }
